@@ -8,6 +8,7 @@ class DBHelper {
       upgradeDb.createObjectStore('restaurants');
       upgradeDb.createObjectStore('restaurant', { keyPath: 'id' });
       upgradeDb.createObjectStore('reviews');
+      upgradeDb.createObjectStore('offline-reviews', { autoIncrement : true, keyPath: 'id' });
     });
 
     return dbPromise;
@@ -126,7 +127,7 @@ class DBHelper {
     .then(db => {
       const tx = db.transaction('reviews');
       const store = tx.objectStore('reviews');
-      return store.get(parseInt(id, 10));
+      return store.get(id);
     })
     .then(reviews => {
       if(!reviews) return DBHelper.fetchAndStoreRestaurantReviewsById(id);
@@ -229,6 +230,47 @@ class DBHelper {
   static dateFormat(value, locale='en-us') {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(value).toLocaleString(locale, options);
+  }
+
+  /**
+   * Store an offline review.
+   */
+  static storeOfflineReview(review) {
+    return DBHelper.IDB().then(db => {
+      const tx = db.transaction('offline-reviews', 'readwrite');
+      const store = tx.objectStore('offline-reviews');
+      store.put(review);
+      return review;
+    }); 
+  }
+
+  /**
+   * Remove an offline review by ID.
+   */
+  static deleteReview(reviewID) {
+    return DBHelper.IDB().then(db => {
+      const tx = db.transaction('offline-reviews', 'readwrite');
+      const store = tx.objectStore('offline-reviews');      
+      return store.delete(reviewID);
+    })
+  }
+
+  /**
+   * Update all deferred reviews and delete successfully updated review.
+   */
+  static updateAndDeleteDeferredReviews() {
+    return DBHelper.IDB().then(db => {
+      const tx = db.transaction('offline-reviews', 'readonly');
+      const store = tx.objectStore('offline-reviews');      
+      return store.getAll();
+    })
+    .then(reviews => {
+      reviews.forEach(review => {
+        DBHelper.submitReview(review)
+        .then(resp => DBHelper.deleteReview(review.id))
+        .catch(err => console.error(err));
+      });
+    }); 
   }
 
   /**

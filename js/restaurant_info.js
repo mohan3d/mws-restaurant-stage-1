@@ -147,7 +147,7 @@ createReviewHTML = (review) => {
   li.appendChild(name);
 
   const date = document.createElement('p');
-  date.innerHTML = DBHelper.dateFormat(review.createdAt);
+  date.innerHTML = (review.createdAt ? DBHelper.dateFormat(review.createdAt) : 'Offline review');
   li.appendChild(date);
 
   const rating = createReviewRatingHTML(review);
@@ -182,6 +182,12 @@ fillBreadcrumb = (restaurant=self.restaurant) => {
  */
 addReview = () => {
   const reviewForm = document.getElementById('review-form');
+  
+  if(!reviewForm.name.value){
+    displayMessage('Please enter your name before submitting.');
+    return;
+  }
+
   const restaurantID = getParameterByName('id');
   const data = {
     "restaurant_id": restaurantID,
@@ -190,9 +196,43 @@ addReview = () => {
     "comments": reviewForm.comments.value,    
   }
 
-  DBHelper.submitReview(data)
-  .then(resp => console.log(resp))
-  .catch(err => console.log(err));
+  if(navigator.onLine) {
+    DBHelper.submitReview(data)
+    .then(resp => {
+      fillReviewsHTML([data]);
+      displayMessage('Your review has been submitted successfully.');
+      reviewForm.reset();  
+    })
+    .catch(err => console.error(err));
+  } else {
+    DBHelper.storeOfflineReview(data)
+    .then(review => {
+      fillReviewsHTML([review]);
+      displayMessage('You are offline, your review has been saved.');
+      reviewForm.reset(); 
+    })
+    .catch(err => console.error(err));
+  }  
+}
+
+/**
+ * Update previously deferred reviews.
+ */
+updateDeferredReviews = () => {
+  DBHelper.updateAndDeleteDeferredReviews();
+}
+
+/**
+ * Display the message in a snackbar.
+ */
+displayMessage = (message, duration=5000) => {
+  const snackbar = document.getElementById('snackbar');
+  snackbar.className = "show";
+  snackbar.innerHTML = message;  
+
+  setTimeout(() => { 
+    snackbar.className = snackbar.className.replace("show", ""); 
+  }, duration);
 }
 
 /**
@@ -210,3 +250,13 @@ getParameterByName = (name, url) => {
     return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
+
+window.addEventListener('online', () => {
+  updateDeferredReviews();
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+  if(navigator.onLine) { 
+    updateDeferredReviews();
+  }
+});
