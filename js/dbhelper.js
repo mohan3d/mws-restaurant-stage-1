@@ -32,6 +32,13 @@ class DBHelper {
   }
 
   /**
+   * 
+   */
+  static get GOOGLE_MAP_KEY() {
+    return 'AIzaSyBxj-p1mVktypKkZ1U1NVFpAuCJuEtmKHc';
+  }
+
+  /**
    * Fetch and store all restaurants to idb.
    */
   static fetchAndStoreRestaurants() {

@@ -12,7 +12,7 @@ gulp.task('scripts', () => {
 });
 
 gulp.task('images', () => {
-    return gulp.src('img/*')
+    return gulp.src('img/*.jpg')
         .pipe(imagemin([imagemin.jpegtran({progressive: true})]))
         .pipe(gulp.dest('dist/img'));
 });
