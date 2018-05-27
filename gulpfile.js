@@ -2,7 +2,6 @@ const gulp = require('gulp');
 const imagemin = require('gulp-imagemin');
 const uglify = require('gulp-uglify-es').default;
 const cleanCSS = require('gulp-clean-css');
-const htmlmin = require('gulp-htmlmin');
 const webp = require('gulp-webp');
 
 gulp.task('scripts', () => {
@@ -31,7 +30,6 @@ gulp.task('css', () => {
 
 gulp.task('html', () => {
     return gulp.src('*.html')
-        .pipe(htmlmin({collapseWhitespace: true}))
         .pipe(gulp.dest('dist'));
 });
 
