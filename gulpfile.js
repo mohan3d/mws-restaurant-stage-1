@@ -3,6 +3,7 @@ const imagemin = require('gulp-imagemin');
 const uglify = require('gulp-uglify-es').default;
 const cleanCSS = require('gulp-clean-css');
 const webp = require('gulp-webp');
+const styleInject = require("gulp-style-inject");
 
 gulp.task('scripts', () => {
     return gulp.src('js/*.js')
@@ -30,6 +31,7 @@ gulp.task('css', () => {
 
 gulp.task('html', () => {
     return gulp.src('*.html')
+        .pipe(styleInject())
         .pipe(gulp.dest('dist'));
 });
 
