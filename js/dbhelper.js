@@ -38,6 +38,9 @@ class DBHelper {
     return 'AIzaSyBxj-p1mVktypKkZ1U1NVFpAuCJuEtmKHc';
   }
   
+  static get GOOGLE_MAP_URL() {
+    return `https://maps.googleapis.com/maps/api/js?key=${DBHelper.GOOGLE_MAP_KEY}&libraries=places&callback=initMap`;
+  }
   /**
    * Fetch and store all restaurants to idb.
    */
@@ -215,6 +218,13 @@ class DBHelper {
    */
   static imageUrlForRestaurant(restaurant) {
     return (`/img/${restaurant.photograph}.webp`);
+  }
+
+  /**
+   * Restaurant map image URL.
+   */
+  static imageUrlForRestaurantMap(restaurant) {
+    return (`/img/google_map_res_${restaurant.id}.webp`);
   }
 
   /**

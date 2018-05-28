@@ -37,7 +37,12 @@
         </div>
 
         <div id="map-container">
-          <div id="map" role="application" aria-label="restaurant location"></div>
+          <div id="map" role="application" aria-label="restaurant location">
+            <img id="map-image" src="/img/map-placeholder-image.webp" 
+                 alt="restaurant map placeholder" 
+                 onclick="addMap()"
+            />
+          </div>
         </div>
 
       </div>
@@ -77,7 +82,7 @@
   <script type="text/javascript" src="js/idb.js"></script>
   <script type="text/javascript" src="js/dbhelper.js"></script>
   <script type="text/javascript" src="js/restaurant_info.js"></script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxj-p1mVktypKkZ1U1NVFpAuCJuEtmKHc&libraries=places&callback=initMap"></script>
+  <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxj-p1mVktypKkZ1U1NVFpAuCJuEtmKHc&libraries=places&callback=initMap"></script> -->
 
   <script>
     if ('serviceWorker' in navigator) {
