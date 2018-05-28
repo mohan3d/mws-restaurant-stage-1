@@ -72,7 +72,7 @@ fillCuisinesHTML = (cuisines = self.cuisines) => {
  */
 addMap = () => {
   const map = document.createElement('script');
-  map.src = `https://maps.googleapis.com/maps/api/js?key=${DBHelper.GOOGLE_MAP_KEY}&libraries=places&callback=initMap`;
+  map.src = DBHelper.GOOGLE_MAP_URL;
   document.body.appendChild(map);
 }
 
