@@ -2,10 +2,7 @@ let restaurant;
 var map;
 
 
-/**
- * Initialize Google map, called from HTML.
- */
-window.initMap = () => {
+document.addEventListener('DOMContentLoaded', (event) => {
   if (self.restaurant) {
     return;
   }
@@ -21,17 +18,24 @@ window.initMap = () => {
     self.restaurant.reviews = reviews;
 
     fillRestaurantHTML();
-
-    self.map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 16,
-      center: self.restaurant.latlng,
-      scrollwheel: false
-    });
-
+    fillRestaurantMapImage();
     fillBreadcrumb();
-    DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
+    // DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
   })
   .catch(err => console.error(err));
+});
+
+/**
+ * Initialize Google map, called from HTML.
+ */
+window.initMap = () => {
+  self.map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 16,
+    center: self.restaurant.latlng,
+    scrollwheel: false
+  });
+
+  DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
 }
 
 /**
@@ -216,6 +220,14 @@ addReview = () => {
 }
 
 /**
+ * Fill map placeholder with image map.
+ */
+fillRestaurantMapImage = (restaurant=self.restaurant) => {
+  const image = document.getElementById('map-image');
+  image.src = DBHelper.imageUrlForRestaurantMap(restaurant);
+}
+
+/**
  * Update previously deferred reviews.
  */
 updateDeferredReviews = () => {
@@ -233,6 +245,15 @@ displayMessage = (message, duration=5000) => {
   setTimeout(() => { 
     snackbar.className = snackbar.className.replace("show", ""); 
   }, duration);
+}
+
+/**
+ * Add google map.
+ */
+addMap = () => {
+  const map = document.createElement('script');
+  map.src = DBHelper.GOOGLE_MAP_URL;
+  document.body.appendChild(map);
 }
 
 /**

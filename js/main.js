@@ -10,6 +10,7 @@ var markers = []
 document.addEventListener('DOMContentLoaded', (event) => {
   fetchNeighborhoods();
   fetchCuisines();
+  updateRestaurants();
 });
 
 /**
@@ -64,6 +65,15 @@ fillCuisinesHTML = (cuisines = self.cuisines) => {
     option.value = cuisine;
     select.append(option);
   });
+}
+
+/**
+ * Add google map.
+ */
+addMap = () => {
+  const map = document.createElement('script');
+  map.src = DBHelper.GOOGLE_MAP_URL;
+  document.body.appendChild(map);
 }
 
 /**
@@ -127,7 +137,12 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
   restaurants.forEach(restaurant => {
     ul.append(createRestaurantHTML(restaurant));
   });
-  addMarkersToMap();
+
+  // Check for google maps existence.
+  // https://stackoverflow.com/questions/9228958/how-to-check-if-google-maps-api-is-loaded/9230163#9230163
+  if (typeof google === 'object' && typeof google.maps === 'object') {
+    addMarkersToMap();
+  }
 }
 
 /**

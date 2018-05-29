@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#3397db"/>
   <link rel="manifest" href="/manifest.json">
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
-  <link rel="stylesheet" href="css/styles.css">
+  <!-- inject-style src="css/styles.css" -->
   <title>Restaurant Reviews</title>
 </head>
 
@@ -19,8 +19,17 @@
 
   <main id="maincontent">
     <section id="map-container">
-      <div id="map" role="application" aria-label="restaurants map"></div>
+      <div id="map" role="application" aria-label="restaurants map">
+        <picture>
+          <source media="(max-width: 412px)" srcset="img/google_map-w412_h400.webp">
+          <source media="(min-width: 413px) and (max-width: 720px)" srcset="img/google_map-w720_h400.webp">
+          <source media="(min-width: 721px) and (max-width: 1000px)" srcset="img/google_map-w1000_h400.webp">
+          <source media="(min-width: 1001px)" srcset="img/google_map-w1900_h400.webp">
+          <img src="img/google_map-w1000_h400.webp" alt="restaurants map placeholder" onclick="addMap()">
+        </picture>
+      </div>
     </section>
+
     <section>
       <div class="filter-options">
         <h2 aria-label="filter options" tabindex="0">Filter Results</h2>
@@ -38,8 +47,7 @@
   <script type="application/javascript" charset="utf-8" src="js/idb.js"></script>
   <script type="application/javascript" charset="utf-8" src="js/dbhelper.js"></script>
   <script type="application/javascript" charset="utf-8" src="js/main.js"></script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxj-p1mVktypKkZ1U1NVFpAuCJuEtmKHc&libraries=places&callback=initMap"></script>
-
+  
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
