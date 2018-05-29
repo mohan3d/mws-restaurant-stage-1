@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     fillRestaurantHTML();
     fillRestaurantMapImage();
     fillBreadcrumb();
+    fillFavoriteHeart();
     LazyLoad();
   })
   .catch(err => console.error(err));
@@ -221,12 +222,38 @@ addReview = () => {
 }
 
 /**
+ * Favorite/Unfavorite restaurant.
+ */
+toggleFavoriteRestaurant = (restaurant=self.restaurant) => {
+  const is_favorite = (restaurant.is_favorite === 'true' ? 'false' : 'true');
+
+  DBHelper.favoriteRestaurant(restaurant, is_favorite)
+  .then(resp => {
+    self.restaurant = resp;    
+    fillFavoriteHeart();
+  })
+  .catch(err => console.error(err));
+}
+
+/**
  * Fill map placeholder with image map.
  */
 fillRestaurantMapImage = (restaurant=self.restaurant) => {
   const image = document.getElementById('map-image');
-  // image.src = DBHelper.imageUrlForRestaurantMap(restaurant);
   image.setAttribute("data-src", DBHelper.imageUrlForRestaurantMap(restaurant));
+}
+
+/**
+ * Check/Uncheck favorite heart.
+ */
+fillFavoriteHeart = (restaurant=self.restaurant) => {
+  const favoriteSpan = document.getElementById('favorite');
+
+  if(restaurant.is_favorite === 'true') {
+    favoriteSpan.classList.add('favorite-checked');
+  } else {
+    favoriteSpan.classList.remove('favorite-checked');
+  }
 }
 
 /**

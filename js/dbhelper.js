@@ -302,4 +302,12 @@ class DBHelper {
       body: body
     });
   }
+
+  static favoriteRestaurant(restaurant, is_favorite=true){
+    const restaurantID = restaurant.id;
+    const url = `${DBHelper.SERVER_URL}/restaurants/${restaurantID}/?is_favorite=${is_favorite}`;
+
+    return fetch(url, { method: 'PUT' })
+    .then(resp => DBHelper.fetchAndStoreRestaurantById(restaurant.id));
+  }
 }

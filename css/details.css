@@ -128,7 +128,7 @@ form > button {
   width: 100%;
   z-index: 1000;
 }
-/* .inside #map-container { */
+
 .inside {
   background: blue none repeat scroll 0 0;
   height: 87%;
@@ -241,6 +241,11 @@ form {
   flex-wrap: wrap;
 }
 
+#restaurant-title {
+  display: flex;
+  align-items: baseline;
+}
+
 /* ================= Star Rating ================= */
 .rating { 
   border: none;
@@ -283,6 +288,24 @@ form {
 
 .rating-stars > span.checked {
   color: #ffd700;
+}
+
+/* ================= Favorite ================= */
+#favorite:before {
+  margin: 5px 10px;
+  font-size: 2.5em;
+  font-family: FontAwesome;
+  display: inline-block;
+  content: "\f004";
+}
+
+#favorite {
+  color: #ddd;
+}
+
+#favorite:hover,
+.favorite-checked{
+  color: #ffd700 !important;
 }
 
 /* ================= Snackbar ================= */
