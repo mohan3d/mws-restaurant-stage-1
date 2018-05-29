@@ -47,7 +47,6 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
   color: #b3b3b3;
   font-size: 8pt;
   letter-spacing: 1px;
-  /* padding: 25px; */
   padding: 25px 0 25px 0;
   text-align: center;
   text-transform: uppercase;
@@ -229,6 +228,19 @@ form {
   margin-bottom: 5%;
 }
 
+#restaurant-open-hours {
+  min-width: 350px;
+}
+
+#map-container {
+  margin: 15px;
+}
+
+#restaurant-details {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 /* ================= Star Rating ================= */
 .rating { 
   border: none;
@@ -297,22 +309,60 @@ form {
 }
 
 
-/* ====================== New ====================== */
-.container {
-  width: 30% !important;
-  min-height: 500px;
+/* ====================== Media Queries ====================== */
+@media screen and (max-width: 900px) {
+  #maincontent { 
+    flex-direction: column;
+  }
+
+  #restaurant-container, #reviews-container {
+    width: 90%;
+  }
+
+  #restaurant-img, #restaurant-cuisine {
+    width: 100%;
+  }
+
+  #map-container {
+    margin: 10px 0px;
+  }
+
+  #restaurant-address, #restaurant-hours td {
+    font-size: 1.2rem;
+  }
 }
 
-.flex-container {
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
+@media screen and (max-width: 850px) {
+  #restaurant-address, #restaurant-hours td {
+    font-size: 1.4rem;
+  }
+
+  #restaurant-open-hours, #restaurant-hours {
+    margin: auto;
+  }
+
+  #map-container {
+    margin: 30px auto 30px;
+  }
 }
 
-#restaurant-open-hours {
-  min-width: 350px;
+@media screen and (max-width: 460px) {
+  #restaurant-address, #restaurant-hours td {
+    font-size: 1.2rem;
+  }
+
+  #map, #map-image {
+    height: 300px;
+    width: 300px;
+  }
+  
+  nav h1 a {
+    font-size: 10pt;
+  }  
 }
 
-#map-container {
-  margin: 15px;
+@media screen and (max-width: 397px) {
+  nav {
+    min-height: 100px;
+  }
 }
