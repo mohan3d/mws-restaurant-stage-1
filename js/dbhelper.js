@@ -302,10 +302,7 @@ class DBHelper {
       headers: { "Content-Type": "application/json" }
      })
     .then(resp => resp.json())
-    .then(review => {
-      return DBHelper.fetchAndStoreRestaurantReviewsById(review.restaurant_id)
-      .then(reviews => reviews.filter(r => r.id === review.id));
-    });
+    .then(review => DBHelper.fetchAndStoreRestaurantReviewsById(review.restaurant_id));
   }
 
   /**

@@ -110,8 +110,17 @@ fillReviewsListHTML = (reviews) => {
   reviews.forEach(review => {
     ul.appendChild(createReviewHTML(review));
   });
-
   return ul;
+}
+
+/**
+ * Remove all reviews from review-list.
+ */
+clearReviewsListHTML = () => {
+  const ul = document.getElementById('reviews-list');
+  while(ul.hasChildNodes()){
+    ul.removeChild(ul.firstChild);
+  }
 }
 
 /**
@@ -215,6 +224,7 @@ addReview = () => {
   if(navigator.onLine) {
     DBHelper.submitReview(data)
     .then(resp => {
+      clearReviewsListHTML();
       fillReviewsListHTML(resp);     
       displayMessage('Your review has been submitted successfully.');
       reviewForm.reset();  
