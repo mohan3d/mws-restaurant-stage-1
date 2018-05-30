@@ -128,7 +128,7 @@ form > button {
   width: 100%;
   z-index: 1000;
 }
-/* .inside #map-container { */
+
 .inside {
   background: blue none repeat scroll 0 0;
   height: 87%;
@@ -203,12 +203,12 @@ form > button {
 }
 #reviews-list li {
   background-color: #fff;
-    border: 2px solid #f3f3f3;
+  border: 2px solid #99590040;
   display: block;
   list-style-type: none;
   margin: 0 0 30px;
   overflow: hidden;
-  padding: 0 20px 20px;
+  padding: 20px 20px;
   position: relative;
   width: 85%;
 }
@@ -225,7 +225,10 @@ form > input, textarea {
 }
 
 form {
+  width: 85%;
   margin-bottom: 5%;
+  padding: 20px 20px;
+  border: 2px solid #99590040;
 }
 
 #restaurant-open-hours {
@@ -239,6 +242,11 @@ form {
 #restaurant-details {
   display: flex;
   flex-wrap: wrap;
+}
+
+#restaurant-title {
+  display: flex;
+  align-items: baseline;
 }
 
 /* ================= Star Rating ================= */
@@ -285,6 +293,24 @@ form {
   color: #ffd700;
 }
 
+/* ================= Favorite ================= */
+#favorite:before {
+  margin: 5px 10px;
+  font-size: 2.5em;
+  font-family: FontAwesome;
+  display: inline-block;
+  content: "\f004";
+}
+
+#favorite {
+  color: #ddd;
+}
+
+#favorite:hover,
+.favorite-checked{
+  color: #ffd700 !important;
+}
+
 /* ================= Snackbar ================= */
 
 #snackbar {
@@ -310,6 +336,12 @@ form {
 
 
 /* ====================== Media Queries ====================== */
+@media screen and (max-width: 1600px) {
+  #map-container {
+    margin: 15px 15px 15px 0px;
+  }
+}
+
 @media screen and (max-width: 900px) {
   #maincontent { 
     flex-direction: column;
@@ -349,6 +381,7 @@ form {
 @media screen and (max-width: 460px) {
   #restaurant-address, #restaurant-hours td {
     font-size: 1.2rem;
+    text-align: center;
   }
 
   #map, #map-image {

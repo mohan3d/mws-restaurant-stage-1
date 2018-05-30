@@ -297,9 +297,22 @@ class DBHelper {
     const url = `${DBHelper.SERVER_URL}/reviews/`;
     const body = JSON.stringify(data);
     
-    return fetch(url, {
-      method: 'post',
-      body: body
+    return fetch(url, { method: 'post', body: body })
+    .then(resp => resp.json())
+    .then(review => {
+      return DBHelper.fetchAndStoreRestaurantReviewsById(review.restaurant_id)
+      .then(reviews => reviews.filter(r => r.id === review.id));
     });
+  }
+
+  /**
+   * Favorite/Unfavorite restaurant.
+   */
+  static favoriteRestaurant(restaurant, is_favorite=true){
+    const restaurantID = restaurant.id;
+    const url = `${DBHelper.SERVER_URL}/restaurants/${restaurantID}/?is_favorite=${is_favorite}`;
+
+    return fetch(url, { method: 'PUT' })
+    .then(resp => DBHelper.fetchAndStoreRestaurantById(restaurant.id));
   }
 }

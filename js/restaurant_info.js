@@ -20,7 +20,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     fillRestaurantHTML();
     fillRestaurantMapImage();
     fillBreadcrumb();
-    // DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
+    fillFavoriteHeart();
+    LazyLoad();
   })
   .catch(err => console.error(err));
 });
@@ -65,8 +66,9 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   address.innerHTML = restaurant.address;
 
   const image = document.getElementById('restaurant-img');
-  image.className = 'restaurant-img'
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  image.className = 'restaurant-img lazy';
+  // image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  image.setAttribute("data-src", DBHelper.imageUrlForRestaurant(restaurant));
   image.alt = image.alt = `An image from the restaurant ${restaurant.name}`;
 
   const cuisine = document.getElementById('restaurant-cuisine');
@@ -101,6 +103,18 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
 }
 
 /**
+ * Add reviews html to reviews-list.
+ */
+fillReviewsListHTML = (reviews) => {
+  const ul = document.getElementById('reviews-list');
+  reviews.forEach(review => {
+    ul.appendChild(createReviewHTML(review));
+  });
+
+  return ul;
+}
+
+/**
  * Create all reviews HTML and add them to the webpage.
  */
 fillReviewsHTML = (reviews = self.restaurant.reviews) => {
@@ -115,10 +129,8 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
     container.appendChild(noReviews);
     return;
   }
-  const ul = document.getElementById('reviews-list');
-  reviews.forEach(review => {
-    ul.appendChild(createReviewHTML(review));
-  });
+    
+  const ul = fillReviewsListHTML(reviews);
   container.appendChild(ul);
 }
 
@@ -203,7 +215,7 @@ addReview = () => {
   if(navigator.onLine) {
     DBHelper.submitReview(data)
     .then(resp => {
-      fillReviewsHTML([data]);
+      fillReviewsListHTML(resp);     
       displayMessage('Your review has been submitted successfully.');
       reviewForm.reset();  
     })
@@ -211,7 +223,7 @@ addReview = () => {
   } else {
     DBHelper.storeOfflineReview(data)
     .then(review => {
-      fillReviewsHTML([review]);
+      fillReviewsListHTML([review]);
       displayMessage('You are offline, your review has been saved.');
       reviewForm.reset(); 
     })
@@ -220,11 +232,38 @@ addReview = () => {
 }
 
 /**
+ * Favorite/Unfavorite restaurant.
+ */
+toggleFavoriteRestaurant = (restaurant=self.restaurant) => {
+  const is_favorite = (restaurant.is_favorite === 'true' ? 'false' : 'true');
+
+  DBHelper.favoriteRestaurant(restaurant, is_favorite)
+  .then(resp => {
+    self.restaurant = resp;    
+    fillFavoriteHeart();
+  })
+  .catch(err => console.error(err));
+}
+
+/**
  * Fill map placeholder with image map.
  */
 fillRestaurantMapImage = (restaurant=self.restaurant) => {
   const image = document.getElementById('map-image');
-  image.src = DBHelper.imageUrlForRestaurantMap(restaurant);
+  image.setAttribute("data-src", DBHelper.imageUrlForRestaurantMap(restaurant));
+}
+
+/**
+ * Check/Uncheck favorite heart.
+ */
+fillFavoriteHeart = (restaurant=self.restaurant) => {
+  const favoriteSpan = document.getElementById('favorite');
+
+  if(restaurant.is_favorite === 'true') {
+    favoriteSpan.classList.add('favorite-checked');
+  } else {
+    favoriteSpan.classList.remove('favorite-checked');
+  }
 }
 
 /**
@@ -245,15 +284,6 @@ displayMessage = (message, duration=5000) => {
   setTimeout(() => { 
     snackbar.className = snackbar.className.replace("show", ""); 
   }, duration);
-}
-
-/**
- * Add google map.
- */
-addMap = () => {
-  const map = document.createElement('script');
-  map.src = DBHelper.GOOGLE_MAP_URL;
-  document.body.appendChild(map);
 }
 
 /**
