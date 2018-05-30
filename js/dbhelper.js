@@ -27,8 +27,7 @@ class DBHelper {
    * Server URL.
    */
   static get SERVER_URL() {
-    const port = 1337;
-    return `http://localhost:${port}`;
+    return `https://us-central1-udacity-statging.cloudfunctions.net`;
   }
 
   /**
@@ -297,7 +296,11 @@ class DBHelper {
     const url = `${DBHelper.SERVER_URL}/reviews/`;
     const body = JSON.stringify(data);
     
-    return fetch(url, { method: 'post', body: body })
+    return fetch(url, { 
+      method: 'post', 
+      body: body, 
+      headers: { "Content-Type": "application/json" }
+     })
     .then(resp => resp.json())
     .then(review => {
       return DBHelper.fetchAndStoreRestaurantReviewsById(review.restaurant_id)
