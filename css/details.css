@@ -203,12 +203,12 @@ form > button {
 }
 #reviews-list li {
   background-color: #fff;
-    border: 2px solid #f3f3f3;
+  border: 2px solid #99590040;
   display: block;
   list-style-type: none;
   margin: 0 0 30px;
   overflow: hidden;
-  padding: 0 20px 20px;
+  padding: 20px 20px;
   position: relative;
   width: 85%;
 }
@@ -225,7 +225,10 @@ form > input, textarea {
 }
 
 form {
+  width: 85%;
   margin-bottom: 5%;
+  padding: 20px 20px;
+  border: 2px solid #99590040;
 }
 
 #restaurant-open-hours {
