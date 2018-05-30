@@ -44,8 +44,9 @@ gulp.task('idb', () => {
 gulp.task('copy', () => {
     return gulp.src([
         'sw.js',
-        'manifest.json'
-    ])
+        'manifest.json',
+        'icons/**/*'
+    ], { base: '.' })
     .pipe(gulp.dest('dist'));
 });
 
