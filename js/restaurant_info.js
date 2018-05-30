@@ -103,6 +103,18 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
 }
 
 /**
+ * Add reviews html to reviews-list.
+ */
+fillReviewsListHTML = (reviews) => {
+  const ul = document.getElementById('reviews-list');
+  reviews.forEach(review => {
+    ul.appendChild(createReviewHTML(review));
+  });
+
+  return ul;
+}
+
+/**
  * Create all reviews HTML and add them to the webpage.
  */
 fillReviewsHTML = (reviews = self.restaurant.reviews) => {
@@ -117,10 +129,8 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
     container.appendChild(noReviews);
     return;
   }
-  const ul = document.getElementById('reviews-list');
-  reviews.forEach(review => {
-    ul.appendChild(createReviewHTML(review));
-  });
+    
+  const ul = fillReviewsListHTML(reviews);
   container.appendChild(ul);
 }
 
@@ -205,7 +215,7 @@ addReview = () => {
   if(navigator.onLine) {
     DBHelper.submitReview(data)
     .then(resp => {
-      fillReviewsHTML([data]);
+      fillReviewsListHTML(resp);     
       displayMessage('Your review has been submitted successfully.');
       reviewForm.reset();  
     })
@@ -213,7 +223,7 @@ addReview = () => {
   } else {
     DBHelper.storeOfflineReview(data)
     .then(review => {
-      fillReviewsHTML([review]);
+      fillReviewsListHTML([review]);
       displayMessage('You are offline, your review has been saved.');
       reviewForm.reset(); 
     })
