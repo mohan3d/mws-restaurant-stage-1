@@ -299,8 +299,6 @@ class DBHelper {
     
     return fetch(url, { method: 'post', body: body })
     .then(resp => resp.json())
-    // .then(review => [reviews, DBHelper.fetchAndStoreRestaurantReviewsById(review.restaurant_id)])
-    // .then((review, reviews) => reviews.filter(r.id === review.id));
     .then(review => {
       return DBHelper.fetchAndStoreRestaurantReviewsById(review.restaurant_id)
       .then(reviews => reviews.filter(r => r.id === review.id));
