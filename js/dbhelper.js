@@ -27,7 +27,7 @@ class DBHelper {
    * Server URL.
    */
   static get SERVER_URL() {
-    return `https://us-central1-udacity-statging.cloudfunctions.net`;
+    return 'https://us-central1-udacity-restaurant-review-app.cloudfunctions.net';
   }
 
   /**
